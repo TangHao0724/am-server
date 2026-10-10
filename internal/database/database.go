@@ -2,6 +2,8 @@ package database
 
 import (
 	"fmt"
+	"net"
+	"net/url"
 	"os"
 	"time"
 
@@ -12,13 +14,27 @@ import (
 // 這裡暫時將dsn設為固定，之後需要放env再改
 func Connect() (*gorm.DB, error) {
 
-	dsn := fmt.Sprintf(
-		"postgres://%s:%s@%s:5432/postgres?sslmode=verify-full&sslrootcert=./global-bundle.pem",
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_HOST"),
-	)
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	host := os.Getenv("DB_HOST")
+
+	// 避免環境變數缺漏時產生難以判讀的連線錯誤
+	if user == "" || password == "" || host == "" {
+		return nil, fmt.Errorf("missing required database environment variables")
+	}
+
+	u := &url.URL{
+		Scheme: "postgres",
+		Host:   net.JoinHostPort(host, "5432"),
+		Path:   "postgres",
+		User:   url.UserPassword(user, password),
+	}
+
+	q := u.Query()
+	q.Set("sslmode", "verify-full")
+	q.Set("sslrootcert", "/home/ubuntu/am-server/global-bundle.pem")
+	u.RawQuery = q.Encode()
+	db, err := gorm.Open(postgres.Open(u.String()), &gorm.Config{})
 	if err != nil {
 		return nil, fmt.Errorf("connect database: %w", err)
 	}
