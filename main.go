@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
 	"amserver/internal/database"
@@ -27,6 +28,24 @@ func main() {
 		message := name + " is " + action
 		c.String(http.StatusOK, message)
 	})
+	router.Use(cors.New(cors.Config{
+		AllowOrigins: []string{
+			"http://localhost:5173",
+		},
+		AllowMethods: []string{
+			"GET",
+			"POST",
+			"PUT",
+			"PATCH",
+			"DELETE",
+			"OPTIONS",
+		},
+		AllowHeaders: []string{
+			"Origin",
+			"Content-Type",
+			"Authorization",
+		},
+	}))
 
 	router.POST("/user", func(c *gin.Context) {
 		ctx := c.Request.Context()
