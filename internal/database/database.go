@@ -13,9 +13,10 @@ import (
 func Connect() (*gorm.DB, error) {
 
 	dsn := fmt.Sprintf(
-		"postgres://%s:%s@amdb.c96ia8gyqaxe.ap-southeast-2.rds.amazonaws.com:5432/postgres?sslmode=verify-full&sslrootcert=./global-bundle.pem",
+		"postgres://%s:%s@%s:5432/postgres?sslmode=verify-full&sslrootcert=./global-bundle.pem",
 		os.Getenv("DB_UISER"),
 		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_HOST"),
 	)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
