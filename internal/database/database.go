@@ -29,7 +29,7 @@ func Connect() (*gorm.DB, error) {
 		Path:   "postgres",
 		User:   url.UserPassword(user, password),
 	}
-
+	fmt.Println(u.String())
 	q := u.Query()
 	q.Set("sslmode", "verify-full")
 	q.Set("sslrootcert", "/home/ubuntu/am-server/global-bundle.pem")
