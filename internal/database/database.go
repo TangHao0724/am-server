@@ -14,7 +14,7 @@ func Connect() (*gorm.DB, error) {
 
 	dsn := fmt.Sprintf(
 		"postgres://%s:%s@%s:5432/postgres?sslmode=verify-full&sslrootcert=./global-bundle.pem",
-		os.Getenv("DB_UISER"),
+		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"),
 		os.Getenv("DB_HOST"),
 	)
