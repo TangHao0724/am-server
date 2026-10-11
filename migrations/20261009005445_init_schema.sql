@@ -21,5 +21,6 @@ CREATE TABLE IF NOT EXISTS "imgs" (
 	"created_at" TIMESTAMPTZ DEFAULT NOW(),
 	PRIMARY KEY("id")
 );
+
 -- +goose Down
 SELECT 'down SQL query';

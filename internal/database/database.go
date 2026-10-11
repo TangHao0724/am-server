@@ -13,7 +13,7 @@ import (
 
 // 這裡暫時將dsn設為固定，之後需要放env再改
 func Connect() (*gorm.DB, error) {
-
+	// 雲端DSN，上傳時記得改
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
 	host := os.Getenv("DB_HOST")
@@ -29,12 +29,16 @@ func Connect() (*gorm.DB, error) {
 		Path:   "postgres",
 		User:   url.UserPassword(user, password),
 	}
-	fmt.Println(u.String())
 	q := u.Query()
 	q.Set("sslmode", "verify-full")
-	q.Set("sslrootcert", "/home/ubuntu/am-server/global-bundle.pem")
+	q.Set("sslrootcert", "/opt/aquamarina/global-bundle.pem")
 	u.RawQuery = q.Encode()
-	db, err := gorm.Open(postgres.Open(u.String()), &gorm.Config{})
+	dsn := u.String()
+
+	//本地postgre
+	// dsn := "host=localhost user=postgres password=Asdf-15963 dbname=amdb port=5432 sslmode=disable"
+
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, fmt.Errorf("connect database: %w", err)
 	}

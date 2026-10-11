@@ -5,7 +5,7 @@ import (
 
 	"gorm.io/gorm"
 
-	"amserver/internal/model"
+	"amserver/internal/models"
 )
 
 type UserRepository struct {
@@ -19,8 +19,8 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 func (r *UserRepository) GetByID(
 	ctx context.Context,
 	id int64,
-) (*model.User, error) {
-	var user model.User
+) (*models.User, error) {
+	var user models.User
 
 	err := r.db.WithContext(ctx).
 		First(&user, id).
@@ -34,7 +34,12 @@ func (r *UserRepository) GetByID(
 
 func (r *UserRepository) Create(
 	ctx context.Context,
-	user *model.User,
+	user *models.User,
 ) error {
-	return r.db.WithContext(ctx).Create(user).Error
+	err := r.db.WithContext(ctx).Create(user).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
