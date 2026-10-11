@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"io"
 	"net/http"
 	"strconv"
 
@@ -22,7 +23,7 @@ func QRCodeHadler(c *gin.Context, db *gorm.DB) {
 	}
 
 	// stage_id 在此假設是 QR Code UUID。
-	qrcodeUID := c.Param("stage_id")
+	qrcodeUID := c.Param("qrcode_uid")
 	if qrcodeUID == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "missing QR Code UUID",
@@ -32,11 +33,15 @@ func QRCodeHadler(c *gin.Context, db *gorm.DB) {
 
 	// 2. 取得玩家座標。
 	var req UserlocationRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		return
+	if c.Request.Body != nil {
+		err := c.ShouldBindJSON(&req)
+
+		if err != nil && err != io.EOF {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "invalid request body",
+			})
+			return
+		}
 	}
 
 	// 3. 身份驗證。

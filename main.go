@@ -25,7 +25,7 @@ func main() {
 
 	router.Use(cors.New(cors.Config{
 		AllowOrigins: []string{
-			"http://localhost:5173",
+			"https://service.auqamarine.date",
 		},
 		AllowMethods: []string{
 			"GET",
@@ -61,8 +61,8 @@ func main() {
 
 	}
 	// 掃碼驗證
-	router.POST(
-		"/qrcode/:game_id/:stage_id",
+	router.GET(
+		"/qrcode/:game_id/:qrcode_uid",
 		OptionalJWTMiddleware(),
 		func(c *gin.Context) {
 			handler.QRCodeHadler(c, db)

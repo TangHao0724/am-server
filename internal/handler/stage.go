@@ -111,7 +111,7 @@ func GetStageQRCode(c *gin.Context, db *gorm.DB) {
 	}
 
 	png, err := qrcode.Encode(
-		*stage.QrcodeUid,
+		"http://54.54.68.45:8080/qrcode/"+strconv.FormatUint(gameID, 10)+"/"+*stage.QrcodeUid,
 		qrcode.Medium,
 		256,
 	)
