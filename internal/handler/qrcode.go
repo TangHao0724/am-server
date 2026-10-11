@@ -50,10 +50,7 @@ func QRCodeHadler(c *gin.Context, db *gorm.DB) {
 	rawUserID, exists := c.Get("userID")
 
 	if !exists {
-		c.JSON(http.StatusOK, gin.H{
-			"status":  "redirectWelcome",
-			"game_id": gameID64,
-		})
+		c.Redirect(302, "https://service.auqamarine.date/welecome/"+strconv.FormatInt(gameID64, 10))
 		return
 	}
 
