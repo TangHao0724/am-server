@@ -25,6 +25,7 @@ func main() {
 
 	router.Use(cors.New(cors.Config{
 		AllowOrigins: []string{
+			"http://localhost:5173",
 			"https://service.auqamarine.date",
 		},
 		AllowMethods: []string{
