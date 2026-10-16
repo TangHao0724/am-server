@@ -111,7 +111,7 @@ func GetStageQRCode(c *gin.Context, db *gorm.DB) {
 	}
 
 	png, err := qrcode.Encode(
-		"https://api.auqamarine.date/welecome/"+strconv.FormatUint(gameID, 10)+"/"+*stage.QrcodeUid,
+		"https://api.auqamarine.date/"+strconv.FormatUint(gameID, 10)+"/"+*stage.QrcodeUid,
 		qrcode.Medium,
 		256,
 	)

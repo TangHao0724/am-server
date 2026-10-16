@@ -2,9 +2,6 @@ package database
 
 import (
 	"fmt"
-	"net"
-	"net/url"
-	"os"
 	"time"
 
 	"gorm.io/driver/postgres"
@@ -14,29 +11,29 @@ import (
 // 這裡暫時將dsn設為固定，之後需要放env再改
 func Connect() (*gorm.DB, error) {
 	// // 雲端DSN，上傳時記得改
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
-	host := os.Getenv("DB_HOST")
+	// user := os.Getenv("DB_USER")
+	// password := os.Getenv("DB_PASSWORD")
+	// host := os.Getenv("DB_HOST")
 
-	// // 避免環境變數缺漏時產生難以判讀的連線錯誤
-	if user == "" || password == "" || host == "" {
-		return nil, fmt.Errorf("missing required database environment variables")
-	}
+	// // // 避免環境變數缺漏時產生難以判讀的連線錯誤
+	// if user == "" || password == "" || host == "" {
+	// 	return nil, fmt.Errorf("missing required database environment variables")
+	// }
 
-	u := &url.URL{
-		Scheme: "postgres",
-		Host:   net.JoinHostPort(host, "5432"),
-		Path:   "postgres",
-		User:   url.UserPassword(user, password),
-	}
-	q := u.Query()
-	q.Set("sslmode", "verify-full")
-	q.Set("sslrootcert", "/opt/aquamarina/global-bundle.pem")
-	u.RawQuery = q.Encode()
-	dsn := u.String()
+	// u := &url.URL{
+	// 	Scheme: "postgres",
+	// 	Host:   net.JoinHostPort(host, "5432"),
+	// 	Path:   "postgres",
+	// 	User:   url.UserPassword(user, password),
+	// }
+	// q := u.Query()
+	// q.Set("sslmode", "verify-full")
+	// q.Set("sslrootcert", "/opt/aquamarina/global-bundle.pem")
+	// u.RawQuery = q.Encode()
+	// dsn := u.String()
 
 	//本地postgre
-	// dsn := "host=localhost user=postgres password=Asdf-15963 dbname=amdb port=5432 sslmode=disable"
+	dsn := "host=localhost user=postgres password=Asdf-15963 dbname=amdb port=5432 sslmode=disable"
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {

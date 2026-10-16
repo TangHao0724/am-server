@@ -105,3 +105,11 @@ func QRCodeHadler(c *gin.Context, db *gorm.DB) {
 	// 6. [非 傳Repository] 回 HTTP 結果。
 	c.JSON(http.StatusOK, result)
 }
+func QRCodeLandingHandler(c *gin.Context) {
+	gameID := c.Param("game_id")
+
+	c.Redirect(
+		http.StatusFound,
+		"https://service.auqamarine.date/welecome/"+gameID,
+	)
+}
