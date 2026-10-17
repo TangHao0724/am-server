@@ -77,8 +77,11 @@ func main() {
 
 		// 遊玩類型
 		// 建立新遊戲
-		authorized.GET("/game/join/:gamecode", func(ctx *gin.Context) {
+		authorized.POST("/game/join/:gamecode", func(ctx *gin.Context) {
 			game.JoinGame(ctx, db)
+		})
+		authorized.GET("gameplays/:gameplayid/stages/current", func(ctx *gin.Context) {
+			game.CurrentStage(ctx, db)
 		})
 
 		// 帳號相關

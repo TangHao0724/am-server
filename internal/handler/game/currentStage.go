@@ -118,7 +118,7 @@ func CurrentStage(c *gin.Context, db *gorm.DB) {
 		})
 		return
 	}
-
+	// 獲取quest資訊
 	// 帶有關卡的探索，
 	c.JSON(http.StatusOK, gin.H{
 		"status":      "graph",
