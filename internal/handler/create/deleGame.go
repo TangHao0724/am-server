@@ -1,4 +1,4 @@
-package game
+package create
 
 import (
 	"amserver/internal/models"

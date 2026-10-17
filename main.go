@@ -9,6 +9,7 @@ import (
 	"amserver/internal/database"
 	"amserver/internal/handler"
 	"amserver/internal/handler/account"
+	"amserver/internal/handler/create"
 	"amserver/internal/handler/game"
 	"amserver/internal/middleware"
 )
@@ -56,21 +57,31 @@ func main() {
 		authorized.POST("/create", func(ctx *gin.Context) {
 			handler.CreateGameHandler(ctx, db)
 		})
+		// 遊戲編輯相關
 		// 建立遊戲
-		authorized.POST("/game/new", func(ctx *gin.Context) {
-			game.NewGameHandler(ctx, db)
+		authorized.POST("/create/new", func(ctx *gin.Context) {
+			create.NewGameHandler(ctx, db)
 		})
 		// 查詢遊戲，用作進入遊戲設置、編輯器
-		authorized.GET("/game/:gameid", func(ctx *gin.Context) {
-			game.LoadGameHandler(ctx, db)
+		authorized.GET("/create/:gameid", func(ctx *gin.Context) {
+			create.LoadGameHandler(ctx, db)
 		})
 		// 編輯器內更新，用作進入遊戲設置、編輯器
-		authorized.PUT("/game/:gameid", func(ctx *gin.Context) {
-			game.UpdateGameHandler(ctx, db)
+		authorized.PUT("/create/:gameid", func(ctx *gin.Context) {
+			create.UpdateGameHandler(ctx, db)
 		})
-		authorized.DELETE("/game/:gameid", func(ctx *gin.Context) {
-			game.DeleteGameHandler(ctx, db)
+		// 移除關卡
+		authorized.DELETE("/create/:gameid", func(ctx *gin.Context) {
+			create.DeleteGameHandler(ctx, db)
 		})
+
+		// 遊玩類型
+		// 建立新遊戲
+		authorized.GET("/game/join/:gamecode", func(ctx *gin.Context) {
+			game.JoinGame(ctx, db)
+		})
+
+		// 帳號相關
 		// 將測試帳號升級
 		authorized.POST("/user/updateUser", func(ctx *gin.Context) {
 			account.UpdateUser(ctx, db)

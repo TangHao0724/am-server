@@ -1,27 +1,27 @@
 package game
 
-type createGameError struct {
+type gameError struct {
 	Status  int
 	Code    string
 	Message string
 	Cause   error
 }
 
-func (e *createGameError) Error() string {
+func (e *gameError) Error() string {
 	return e.Message
 }
 
-func (e *createGameError) Unwrap() error {
+func (e *gameError) Unwrap() error {
 	return e.Cause
 }
 
-func newCreateGameError(
+func newGameError(
 	status int,
 	code string,
 	message string,
 	cause error,
-) *createGameError {
-	return &createGameError{
+) *gameError {
+	return &gameError{
 		Status:  status,
 		Code:    code,
 		Message: message,

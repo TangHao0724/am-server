@@ -49,6 +49,21 @@ func (r *GameRepos) GetByIDAndUserID(
 	return &game, nil
 }
 
+func (r *GameRepos) GetByGameCode(
+	ctx context.Context,
+	gameCode string,
+) (*models.Games, error) {
+	var game models.Games
+	err := r.db.WithContext(ctx).
+		Where("game_code = ?", gameCode).
+		First(&game).
+		Error
+	if err != nil {
+		return nil, err
+	}
+	return &game, nil
+}
+
 func (r *GameRepos) Create(
 	ctx context.Context,
 	game *models.Games,
